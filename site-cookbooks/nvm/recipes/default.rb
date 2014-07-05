@@ -24,3 +24,4 @@ template "/etc/profile.d/nvm.sh" do
   source "nvm.sh.erb"
   mode 00644
 end
+

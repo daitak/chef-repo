@@ -1,6 +1,6 @@
 {
   "nvm" : { "version": "v0.11.12" },
   "run_list": [
-    "nvm"
+    "sudo", "nvm", "nvm::express"
   ]
 }
