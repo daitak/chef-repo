@@ -25,3 +25,11 @@ service "redis" do
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
 end
+
+template "/etc/redis.conf" do
+  source "redis.conf.erb"
+  owner "redis"
+  group "root"
+  mode 0644
+  notifies :restart, "service[redis]"  
+end
