@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-%w{vim-enhanced zsh screen}.each do |pkg|
+%w{vim-enhanced zsh screen ctags}.each do |pkg|
   package pkg do
     action :install
   end
