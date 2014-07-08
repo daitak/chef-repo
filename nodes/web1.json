@@ -2,6 +2,6 @@
   "nvm" : { "version": "v0.11.12" },
   "dev_env": { "user" : "vagrant" },
   "run_list": [
-    "iptables", "telnet", "sudo", "nvm", "nvm::express", "dev_env"
+    "iptables", "telnet", "sudo", "dev_env", "nvm", "nvm::express"
   ]
 }

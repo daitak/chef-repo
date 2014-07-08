@@ -14,9 +14,12 @@
 end
 
 DIRNAME="home_settings"
+GITHUB_USER="daitak"
+REPO_NAME="#{DIRNAME}.git"
 git "/home/#{node['dev_env']['user']}/#{DIRNAME}" do
-  repository "https://github.com/daitak/home_settings.git"
+  repository "https://github.com/#{GITHUB_USER}/#{REPO_NAME}"
   revision "master"
+  user node['dev_env']['user']
   action :sync
 end
 
@@ -26,9 +29,19 @@ end
   end
 end
 
-bash "Set User's shell to zsh" do
+bash "Set user's shell to zsh" do
     code <<-EOT
         chsh -s /bin/zsh #{node['dev_env']['user']}
           EOT
             not_if 'test "/bin/zsh" = "$(grep #{node["dev_env"]["user"]} /etc/passwd | cut -d: -f7)"'
+end
+
+bash "Modify remote repo for pushing to github" do
+  url = "https://#{GITHUB_USER}@github.com/#{GITHUB_USER}/#{REPO_NAME}"
+  user node['dev_env']['user'] 
+  code <<-EOT
+        cd /home/#{node['dev_env']['user']}/#{DIRNAME}
+        git remote set-url origin #{url}
+        EOT
+        not_if "test #{url} = \"cat /home/#{node['dev_env']['user']}/#{DIRNAME} | grep url | awk \'{ print $3}\'   \""
 end
