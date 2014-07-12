@@ -1,5 +1,6 @@
 DEPENDENCIES
   npm
+  sudo
 
 GRAPH
   apt (2.4.0)
@@ -10,4 +11,5 @@ GRAPH
     yum (>= 0.0.0)
   npm (0.1.2)
     nodejs (>= 0.0.0)
+  sudo (2.6.0)
   yum (3.2.2)

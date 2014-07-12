@@ -195,6 +195,9 @@ dir /var/lib/redis/
 # different interval, or to listen to another port, and so on.
 #
 # slaveof <masterip> <masterport>
+<% if node['redis']['role'] == 'slave' %>
+slaveof <%= node['redis']['master_ip'] %> <%= node['redis']['master_port'] %>
+<% end %>
 
 # If the master is password protected (using the "requirepass" configuration
 # directive below) it is possible to tell the slave to authenticate before
