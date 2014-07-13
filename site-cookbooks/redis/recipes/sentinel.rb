@@ -17,6 +17,7 @@ template "/var/lib/redis/failover.sh" do
   owner "redis"
   group "root"
   mode 0755
+  notifies :restart, "service[redis]"  
   notifies :restart, "service[redis-sentinel]"  
 end
 
@@ -25,23 +26,25 @@ template "/etc/redis-sentinel.conf" do
   owner "redis"
   group "root"
   mode 0644
+  notifies :restart, "service[redis]"  
   notifies :restart, "service[redis-sentinel]"  
 end
 
-if node['redis']['role'] == "master" then
-  bash "Add VIP" do
-    user 'root'
-    code <<-EOC
-      ip addr add #{node['sentinel']['vip']}/#{node['sentinel']['netmask']} dev #{node['sentinel']['interface']}
-    EOC
-    not_if "ip addr show | grep inet | grep #{node['sentinel']['interface']} | grep #{node['sentinel']['vip']}/#{node['sentinel']['netmask']}"
-  end
-else
-  bash "Delete VIP" do
-    user 'root'
-    code <<-EOC
-      ip addr del #{node['sentinel']['vip']}/#{node['sentinel']['netmask']} dev #{node['sentinel']['interface']}
-    EOC
-    only_if "ip addr show | grep inet | grep #{node['sentinel']['interface']} | grep #{node['sentinel']['vip']}/#{node['sentinel']['netmask']}"
-  end
+template "/var/lib/redis/set_vip.sh" do
+  source "set_vip.sh.erb"
+  owner "redis"
+  group "root"
+  mode 0755
+  notifies :restart, "service[redis]"  
+  notifies :restart, "service[redis-sentinel]"  
 end
+
+template "/etc/init.d/redis" do
+  source "redis_service.erb"
+  owner "root"
+  group "root"
+  mode 0755
+  notifies :restart, "service[redis]"  
+  notifies :restart, "service[redis-sentinel]"  
+end
+
