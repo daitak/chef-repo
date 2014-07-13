@@ -48,3 +48,11 @@ template "/etc/init.d/redis" do
   notifies :restart, "service[redis-sentinel]"  
 end
 
+# 手動フェイルオーバスクリプト配置
+template "/var/lib/redis/manual_failover.sh" do
+  source "manual_failover.sh.erb"
+  owner "redis"
+  group "root"
+  mode 0755
+end
+
