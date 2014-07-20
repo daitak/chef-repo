@@ -1,0 +1,3 @@
+[submodule "site-cookbooks"]
+	path = site-cookbooks
+	url = https://github.com/daitak/my-cookbooks.git
